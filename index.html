@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>CloudFlux - Cloud Management Platform</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <style>
     * {margin:0;padding:0;box-sizing:border-box;font-family:Arial, sans-serif;}
     body {display:flex;min-height:100vh;background:#f5f7fa;color:#333;}
@@ -78,7 +79,10 @@
         </div>
 
         <div class="charts-section">
-          <div class="chart-card"><h3>Performance Metrics</h3><div class="chart-placeholder">📊 Chart Loading...</div></div>
+          <div class="chart-card">
+            <h3>Performance Metrics</h3>
+            <canvas id="performanceChart" height="200"></canvas>
+          </div>
           <div class="activity-feed"><h3>Recent Activity</h3>
             <div class="activity-item">✅ Service deployed</div>
             <div class="activity-item">⚠️ CPU usage warning</div>
@@ -165,7 +169,7 @@
       });
     });
 
-  
+    // Search functionality
     const searchInput = document.getElementById("searchInput");
     searchInput.addEventListener("input", () => {
       const query = searchInput.value.toLowerCase();
@@ -173,10 +177,41 @@
         item.style.display = item.innerText.toLowerCase().includes(query) ? "block" : "none";
       });
     });
+
+    // Save settings button
     document.getElementById("save-settings").addEventListener("click", () => {
       alert("✅ Settings saved successfully!");
+    });
+
+    // Chart.js performance chart
+    const ctx = document.getElementById('performanceChart').getContext('2d');
+    new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'],
+        datasets: [{
+          label: 'CPU Usage %',
+          data: [65, 59, 80, 81, 56, 55, 70],
+          borderColor: '#3b82f6',
+          backgroundColor: 'rgba(59,130,246,0.2)',
+          fill: true,
+          tension: 0.3
+        },
+        {
+          label: 'Memory Usage GB',
+          data: [3.5, 3.8, 4.2, 4.0, 4.1, 3.9, 4.3],
+          borderColor: '#10b981',
+          backgroundColor: 'rgba(16,185,129,0.2)',
+          fill: true,
+          tension: 0.3
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: { legend: { position: 'top' } },
+        scales: { y: { beginAtZero: true } }
+      }
     });
   </script>
 </body>
 </html>
-
